@@ -1,0 +1,38 @@
+------------------------------------------------------------------------------------------
+
+# To check if a playbook is correctly formatted, the option --syntax-check 
+# looks at all involved playbooks and verifies the correct syntax. 
+
+	ansible-playbook --syntax-check oraclejdk-destroy.yml
+	
+# The option --list-hosts will output a list of affected hosts, including the 
+# name of the actual play and the pattern with which the hosts were chosen
+
+	ansible-playbook --list-hosts oraclejdk-destroy.yml
+
+# The option --list-tasks lists what will be done, showing the names of the 
+# tasks but not executing any of them on the target nodes
+
+	ansible-playbook --list-tasks oraclejdk-destroy.yml
+	
+# The used tags can be listed as well
+
+	ansible-playbook --list-tags setup-control.yml
+
+# Invoked via --check the check mode does not alter the target nodes, 
+# but tries to output what would change and what not.
+
+	ansible-playbook --check oraclejdk-setup.yml
+	
+# One way to debug everything is to go through each task at a time, 
+# step by step, checking the state of all involved components after each task. 
+# This can be done with the option --step.
+
+	ansible-playbook --step oraclejdk-setup.yml
+
+# Many files can change as part of a playbook. In such cases, the option 
+# --diff comes in handy: it shows the diff in typical patch form
+
+	ansible-playbook --diff examples/template.yml
+
+------------------------------------------------------------------------------------------

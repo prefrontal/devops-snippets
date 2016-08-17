@@ -1,0 +1,53 @@
+---
+- hosts: swarm
+  remote_user: ubuntu
+  sudo: yes
+  tasks: 
+
+  - name: Add Docker repository key
+    apt_key:
+      id: "2C52609D"
+      url: "https://apt.dockerproject.org/gpg"
+      state: present
+    register: add_repository_key
+    always_run: yes
+
+  - name: Add Docker repository and update apt cache
+    apt_repository:
+      repo: "deb https://apt.dockerproject.org/repo ubuntu-trusty experimental"
+      mode: '644'
+      update_cache: yes
+      state: present
+    always_run: yes
+
+  - name: register kernel version
+    command: "uname -r"
+    register: kernel_version
+
+  - name: Install required packages
+    apt: name={{item}} state=present
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - apparmor
+      - "linux-image-extra-{{ kernel_version.stdout }}"
+
+  - name: Install Docker
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - docker-engine
+
+  - name: add docker group
+    group:
+      name: docker
+      state: present
+    
+  - name: Add users to the docker group
+    user:
+      name: ubuntu
+      groups: docker
+      append: yes 
+      
+      

@@ -1,0 +1,36 @@
+# ---- Vagrant Commands -----------------------------------------------------------------------------
+
+vagrant init USER/BOX
+
+  Initialize a new Vagrant instance using a prefab box
+  Example: vagrant init hashicorp/precise64
+
+vagrant up
+
+  Bring a Vagrant instance up.  If it has not been provisioned then it will be provisioned on the first run.
+
+vagrant provision
+
+  If you want to provision an already-running instance.
+
+vagrant ssh
+
+  Secure shell to the virtual machine as the vagrant user
+
+vagrant status
+
+  Get the status of the vagrant instance.
+
+vagrant halt
+
+  Stop the virtual machine.  Use the --force flag to force shutdown.
+
+vagrant reload
+
+  The equivalent of doing halt and then up.
+
+vagrant destroy
+
+  Remove the virtual machine from the workstation
+  
+# -------------------------------------------------------------------------------------------------

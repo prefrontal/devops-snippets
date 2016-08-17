@@ -1,0 +1,82 @@
+# Useful Docker Commands
+# ---------------------------------------------------------------
+
+# List all of the available images
+
+    docker images
+    
+# Run an image
+
+    docker run <imageName>
+    
+# List all running and stopped containers
+
+    docker ps -a
+    
+# Show a running list of containers
+
+	docker stats --all
+    
+# Check Docker version
+
+    docker --version
+    docker-compose --version
+    docker-machine --version
+
+# Verify Docker operation
+
+    docker run hello-world
+    
+# Log in to Docker Hub
+
+    docker login --username=<name> --email=<email>
+    
+# Push an image to Docker Hub
+
+    docker push <userName>/<imageName>
+    
+# Remove image
+
+    docker rmi -f <imageName>
+    
+# ---------------------------------------------------------------
+    
+# Starting and Stopping
+
+	docker start 		starts a container so it is running.
+	docker stop 		stops a running container.
+	docker restart 		stops and starts a container.
+	docker pause 		pauses a running container, "freezing" it in place.
+	docker unpause 		will unpause a running container.
+	docker wait 		blocks until running container stops.
+	docker kill 		sends a SIGKILL to a running container.
+	docker attach		will connect to a running container.
+	
+# ---------------------------------------------------------------
+
+# Getting Information
+
+	docker ps 			shows running containers.
+	docker logs 		gets logs from container. (You can use a custom log driver, but logs is only available for json-file and journald in 1.10)
+	docker inspect 		looks at all the info on a container (including IP address).
+	docker events 		gets events from container.
+	docker port 		shows public facing port of container.
+	docker top 			shows running processes in container.
+	docker stats 		shows containers' resource usage statistics.
+	docker diff 		shows changed files in the container's FS.
+
+# ---------------------------------------------------------------
+
+# Build a new container
+
+    docker build -t <container_tag> .
+    
+# Compose a new container
+
+    docker-compose -up
+    
+# Compose a new container with specified yml files
+
+    docker-compose -f 1.yml -f 2.yml -f 3.yml -up
+    
+# ---------------------------------------------------------------
