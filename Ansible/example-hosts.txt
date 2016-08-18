@@ -1,0 +1,11 @@
+[swarm]
+X.X.X.X
+Y.Y.Y.Y
+Z.Z.Z.Z
+
+[manager]
+X.X.X.X
+
+[nodes]
+Y.Y.Y.Y
+Z.Z.Z.Z

@@ -1,0 +1,81 @@
+---
+- hosts: localhost
+  connection: local
+  
+  vars:
+    project_name: swarm
+    aws_region: us-west-1
+    instance_type: t2.micro
+    ami: ami-48db9d28
+    env: test
+    swarm_count: 3
+    
+  tasks:
+    - name: Create security group
+      ec2_group:
+        name: "{{ project_name }}_security_group"
+        description: "{{ project_name }} security group"
+        region: "{{ aws_region }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+      register: basic_firewall
+  
+    - name: Create an EC2 key
+      ec2_key:
+        name: "{{ project_name }}-{{ env }}-key"
+        region: "{{ aws_region }}"
+      register: ec2_key
+  
+    - name: save private key
+      copy: content="{{ ec2_key.key.private_key }}" dest="./aws-{{ env }}-private.pem" mode=0600
+      when: ec2_key.changed
+  
+    - name: Launch AWS instances
+      ec2:
+        key_name: "{{ project_name }}-{{ env }}-key"
+        region: "{{ aws_region }}"
+        group_id: "{{ basic_firewall.group_id }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ ami }}"
+        instance_tags:
+          env: "{{ env }}"
+        count_tag: "{{ env }}"
+        exact_count: "{{ swarm_count }}"
+        assign_public_ip: no
+        wait: true
+      register: ec2_info
+      
+    - name: Add instances to the local host group
+      lineinfile:
+        dest="./hosts.txt"
+        line="{{ item.ami_launch_index }}, {{ item.public_ip }}"
+        regexp={{ item.public_ip }} 
+        insertafter="[webserver]" 
+        create=True
+        
+      with_items: "{{ec2_info.tagged_instances}}"
+
+    - name: Add IP to ec2_hosts group
+      add_host: hostname={{ item.public_ip }} groups=ec2_hosts
+      with_items: "{{ec2_info.tagged_instances}}"
+
+    - name: Wait for SSH to come up
+      wait_for:
+        state=started
+        host={{ item.public_dns_name }}
+        port=22
+      with_items: "{{ec2_info.tagged_instances}}"
