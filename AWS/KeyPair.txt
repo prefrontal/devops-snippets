@@ -1,0 +1,7 @@
+# ---- AWS Key Pairs --------------------------------------------------------------------
+
+Log in to a server using a key pair:
+
+    ssh -i /path/my-key-pair.pem ec2-user@ec2-instance.amazonaws.com
+
+# ---------------------------------------------------------------------------------------
