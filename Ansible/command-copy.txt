@@ -1,0 +1,7 @@
+- name: Copy upstart configuration
+  copy:
+    src: datanorm.conf
+    dest: /etc/init/datanorm.conf
+    owner: root
+    group: root
+    mode: 0664
