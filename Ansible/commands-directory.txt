@@ -1,0 +1,7 @@
+- name: Create service directory
+  file:
+    dest: /opt/datanorm/
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
