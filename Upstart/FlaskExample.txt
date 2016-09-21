@@ -1,0 +1,16 @@
+# ---- Upstart Flask Example -----------------------------------------------------------
+
+  description "Application server for flask-gunicorn"                                                                                                                                 
+  start on runlevel [2345]
+  stop on runlevel [!2345]
+  
+  respawn
+  
+  script
+      # ... environment settings
+      # ...
+      cd /path/to/basedir
+      exec gunicorn server:app  ## execute by init daemon.
+  end script
+
+# --------------------------------------------------------------------------------------
