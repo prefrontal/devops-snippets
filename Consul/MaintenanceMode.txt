@@ -1,0 +1,9 @@
+# Enable maintenance mode
+
+    consul maint -enable
+
+    consul maint -enable -reason="Dont need a reason"
+
+# Disable maintenance mode
+
+    consul maint -disable
