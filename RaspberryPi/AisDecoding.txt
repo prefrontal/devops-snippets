@@ -1,0 +1,21 @@
+# Install rtl-ais software
+
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install rtl-sdr git librtlsdr-dev libusb-1.0-0-dev
+
+git clone https://github.com/dgiardini/rtl-ais
+make
+
+sudo ./rtl_ais -p 0 -R on -n -h 192.168.178.2
+
+
+# Installation of Kalibrate
+
+sudo apt-get install libtool autoconf automake libfftw3-dev
+git clone https://github.com/asdil12/kalibrate-rtl.git
+cd kalibrate-rtl
+git checkout arm_memory
+./bootstrap
+./configure
+make
+sudo make install
